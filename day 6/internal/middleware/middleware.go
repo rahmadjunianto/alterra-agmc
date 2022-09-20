@@ -1,0 +1,61 @@
+package middleware
+
+import (
+	"day6/internal/dto"
+	"os"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+)
+
+func LogMiddlewares(e *echo.Echo) {
+	// dirname, err := os.UserHomeDir()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println(dirname)
+
+	// path := dirname + "/logs/"
+
+	// err = os.MkdirAll(path, os.ModePerm)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+
+	// logFileName := path + "room-service.logs"
+
+	// f, err := os.OpenFile(logFileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	// if err != nil {
+	// 	panic(fmt.Sprintf("error opening file: %v", err))
+	// }
+
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format:           " ${time_custom} | ${host} | ${status} | ${latency_human} | ${remote_ip} | ${method} | ${uri} \n",
+		CustomTimeFormat: "2006/01/02 15:04:05",
+		// Output:           f,
+		Output: os.Stdout,
+	}))
+	// defer f.Close()
+}
+
+type SkipRoute struct {
+	Route  string
+	Method string
+}
+
+func JWTMiddleware(claims dto.JWTClaims, signingKey []byte) echo.MiddlewareFunc {
+	config := middleware.JWTConfig{
+		Claims:     &dto.JWTClaims{},
+		SigningKey: signingKey,
+		//Skipper: func(c echo.Context) bool {
+		//	// Skip middleware if path is equal 'login'
+		//	for _, p := range route {
+		//		if c.Request().URL.Path == p.Route && c.Request().Method == p.Method {
+		//			return true
+		//		}
+		//	}
+		//	return false
+		//},
+	}
+	return middleware.JWTWithConfig(config)
+}
