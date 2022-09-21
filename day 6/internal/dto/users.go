@@ -7,15 +7,6 @@ import (
 )
 
 type (
-	LoginUsersRequestBody struct {
-		Email    *string `json:"email" validate:"required"`
-		Password *string `json:"password" validate:"required"`
-	}
-	CreateUsersRequestBody struct {
-		Name     *string `json:"name" validate:"required"`
-		Email    *string `json:"email" validate:"required"`
-		Password *string `json:"password" validate:"required"`
-	}
 	UpdateUsersRequestBody struct {
 		ID       *uint   `param:"id" validate:"required"`
 		Name     *string `json:"name" validate:"omitempty"`
@@ -27,6 +18,10 @@ type (
 		Name  string `json:"name"`
 		Email string `json:"email"`
 		Token string `json:"token"`
+	}
+	UsersWithJWTResponse struct {
+		UsersResponse
+		JWT string `json:"jwt"`
 	}
 	UsersResponse struct {
 		ID    uint   `json:"id"`

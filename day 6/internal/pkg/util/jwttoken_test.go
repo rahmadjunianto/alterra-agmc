@@ -33,12 +33,11 @@ func TestParseJWTTokenExpiredToken(t *testing.T) {
 
 func TestParseJWTTokenSuccess(t *testing.T) {
 	var (
-		email      string = "vincentlhubbard@superrito.com"
-		userID     uint   = 1
-		roleID     uint   = 1
-		divisionID uint   = 1
+		email string = "user1@mail.com"
+		name  string = "user1"
+		ID    uint   = 1
 	)
-	tk, err := CreateJWTToken(CreateJWTClaims(email, userID, roleID, divisionID))
+	tk, err := CreateJWTToken(CreateJWTClaims(email, name, ID))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -47,8 +46,7 @@ func TestParseJWTTokenSuccess(t *testing.T) {
 		t.Fatal(err)
 	}
 	assert.Equal(t, email, res.Email)
-	assert.Equal(t, userID, res.UserID)
-	assert.Equal(t, roleID, res.RoleID)
-	assert.Equal(t, divisionID, res.DivisionID)
+	assert.Equal(t, ID, res.ID)
+	assert.Equal(t, name, res.Name)
 	assert.NotNil(t, res.ExpiresAt)
 }

@@ -1,13 +1,28 @@
 [
   {
+    "method": "HEAD",
+    "path": "/api/v1/users",
+    "name": "github.com/labstack/echo/v4.glob..func1"
+  },
+  {
+    "method": "OPTIONS",
+    "path": "/api/v1/users/*",
+    "name": "github.com/labstack/echo/v4.glob..func1"
+  },
+  {
     "method": "PATCH",
     "path": "/api/v1/users/*",
     "name": "github.com/labstack/echo/v4.glob..func1"
   },
   {
-    "method": "PROPFIND",
+    "method": "TRACE",
     "path": "/api/v1/users/*",
     "name": "github.com/labstack/echo/v4.glob..func1"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/signup",
+    "name": "day6/internal/app/auth.(*handler).Register-fm"
   },
   {
     "method": "CONNECT",
@@ -15,18 +30,38 @@
     "name": "github.com/labstack/echo/v4.glob..func1"
   },
   {
-    "method": "PATCH",
+    "method": "DELETE",
     "path": "/api/v1/users",
     "name": "github.com/labstack/echo/v4.glob..func1"
   },
   {
-    "method": "POST",
+    "method": "TRACE",
+    "path": "/api/v1/users",
+    "name": "github.com/labstack/echo/v4.glob..func1"
+  },
+  {
+    "method": "REPORT",
     "path": "/api/v1/users",
     "name": "github.com/labstack/echo/v4.glob..func1"
   },
   {
     "method": "OPTIONS",
-    "path": "/api/v1/users/*",
+    "path": "/api/v1/users",
+    "name": "github.com/labstack/echo/v4.glob..func1"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/users",
+    "name": "github.com/labstack/echo/v4.glob..func1"
+  },
+  {
+    "method": "PROPFIND",
+    "path": "/api/v1/users",
+    "name": "github.com/labstack/echo/v4.glob..func1"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/users",
     "name": "github.com/labstack/echo/v4.glob..func1"
   },
   {
@@ -35,12 +70,17 @@
     "name": "day6/internal/http.NewHttp.func1"
   },
   {
-    "method": "DELETE",
-    "path": "/api/v1/users",
+    "method": "CONNECT",
+    "path": "/api/v1/users/*",
     "name": "github.com/labstack/echo/v4.glob..func1"
   },
   {
-    "method": "OPTIONS",
+    "method": "HEAD",
+    "path": "/api/v1/users/*",
+    "name": "github.com/labstack/echo/v4.glob..func1"
+  },
+  {
+    "method": "POST",
     "path": "/api/v1/users",
     "name": "github.com/labstack/echo/v4.glob..func1"
   },
@@ -51,23 +91,28 @@
   },
   {
     "method": "PROPFIND",
-    "path": "/api/v1/users",
-    "name": "github.com/labstack/echo/v4.glob..func1"
-  },
-  {
-    "method": "TRACE",
-    "path": "/api/v1/users",
+    "path": "/api/v1/users/*",
     "name": "github.com/labstack/echo/v4.glob..func1"
   },
   {
     "method": "REPORT",
-    "path": "/api/v1/users",
+    "path": "/api/v1/users/*",
     "name": "github.com/labstack/echo/v4.glob..func1"
   },
   {
-    "method": "CONNECT",
-    "path": "/api/v1/users/*",
-    "name": "github.com/labstack/echo/v4.glob..func1"
+    "method": "DELETE",
+    "path": "/api/v1/users/:id",
+    "name": "day6/internal/app/users.(*handler).DeleteById-fm"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "name": "day6/internal/app/auth.(*handler).Login-fm"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/users",
+    "name": "day6/internal/app/users.(*handler).Get-fm"
   },
   {
     "method": "DELETE",
@@ -80,43 +125,18 @@
     "name": "github.com/labstack/echo/v4.glob..func1"
   },
   {
-    "method": "HEAD",
-    "path": "/api/v1/users/*",
-    "name": "github.com/labstack/echo/v4.glob..func1"
-  },
-  {
     "method": "POST",
     "path": "/api/v1/users/*",
     "name": "github.com/labstack/echo/v4.glob..func1"
   },
   {
     "method": "GET",
-    "path": "/api/v1/users",
-    "name": "day6/internal/app/users.(*handler).Get-fm"
-  },
-  {
-    "method": "HEAD",
-    "path": "/api/v1/users",
-    "name": "github.com/labstack/echo/v4.glob..func1"
+    "path": "/api/v1/users/:id",
+    "name": "day6/internal/app/users.(*handler).GetById-fm"
   },
   {
     "method": "PUT",
-    "path": "/api/v1/users",
-    "name": "github.com/labstack/echo/v4.glob..func1"
-  },
-  {
-    "method": "TRACE",
-    "path": "/api/v1/users/*",
-    "name": "github.com/labstack/echo/v4.glob..func1"
-  },
-  {
-    "method": "REPORT",
-    "path": "/api/v1/users/*",
-    "name": "github.com/labstack/echo/v4.glob..func1"
-  },
-  {
-    "method": "POST",
-    "path": "/api/v1/users/login",
-    "name": "day6/internal/app/users.(*handler).Login-fm"
+    "path": "/api/v1/users/:id",
+    "name": "day6/internal/app/users.(*handler).UpdateById-fm"
   }
 ]

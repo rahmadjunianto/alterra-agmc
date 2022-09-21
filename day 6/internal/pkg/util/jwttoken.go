@@ -28,9 +28,9 @@ func getTokenString(authHeader string) (*string, error) {
 
 func CreateJWTClaims(email, name string, userID uint) dto.JWTClaims {
 	return dto.JWTClaims{
-		UserID: userID,
-		Email:  email,
-		Name:   name,
+		ID:    userID,
+		Email: email,
+		Name:  name,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(JWT_EXP)),
 		},

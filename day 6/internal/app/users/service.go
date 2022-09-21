@@ -23,10 +23,8 @@ func NewService(f *factory.Factory) Service {
 type Service interface {
 	Find(ctx context.Context, payload *pkgdto.SearchGetRequest) (*pkgdto.SearchGetResponse[dto.UsersResponse], error)
 	FindByID(ctx context.Context, payload *pkgdto.ByIDRequest) (*dto.UsersResponse, error)
-	Store(ctx context.Context, payload *dto.CreateUsersRequestBody) (*dto.UsersResponse, error)
 	UpdateById(ctx context.Context, payload *dto.UpdateUsersRequestBody) (*dto.UsersResponse, error)
 	DeleteById(ctx context.Context, payload *pkgdto.ByIDRequest) (*dto.UsersWithCUDResponse, error)
-	Login(ctx context.Context, payload *dto.LoginUsersRequestBody) (*dto.LoginUsersResponse, error)
 }
 
 func (s *service) Find(ctx context.Context, payload *pkgdto.SearchGetRequest) (*pkgdto.SearchGetResponse[dto.UsersResponse], error) {
@@ -69,34 +67,52 @@ func (s *service) FindByID(ctx context.Context, payload *pkgdto.ByIDRequest) (*d
 	return result, nil
 }
 
-func (s *service) Store(ctx context.Context, payload *dto.CreateUsersRequestBody) (*dto.UsersResponse, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
 func (s *service) UpdateById(ctx context.Context, payload *dto.UpdateUsersRequestBody) (*dto.UsersResponse, error) {
-	//TODO implement me
-	panic("implement me")
-}
 
-func (s *service) DeleteById(ctx context.Context, payload *pkgdto.ByIDRequest) (*dto.UsersWithCUDResponse, error) {
-	//TODO implement me
-	panic("implement me")
-}
-func (s *service) Login(ctx context.Context, payload *dto.LoginUsersRequestBody) (*dto.LoginUsersResponse, error) {
-	user, err := s.UsersRepository.Login(ctx, payload)
-
+	user, err := s.UsersRepository.FindByID(ctx, *payload.ID)
 	if err != nil {
 		if err == constant.RECORD_NOT_FOUND {
-			return &dto.LoginUsersResponse{}, res.ErrorBuilder(&res.ErrorConstant.NotFound, err)
+			return &dto.UsersResponse{}, res.ErrorBuilder(&res.ErrorConstant.NotFound, err)
 		}
-		return &dto.LoginUsersResponse{}, res.ErrorBuilder(&res.ErrorConstant.InternalServerError, err)
+		return &dto.UsersResponse{}, res.ErrorBuilder(&res.ErrorConstant.InternalServerError, err)
 	}
-	result := &dto.LoginUsersResponse{
+	_, err = s.UsersRepository.Edit(ctx, &user, payload)
+	if err != nil {
+		return &dto.UsersResponse{}, res.ErrorBuilder(&res.ErrorConstant.InternalServerError, err)
+	}
+
+	result := &dto.UsersResponse{
 		ID:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,
-		Token: user.Token,
 	}
+
+	return result, nil
+}
+
+func (s *service) DeleteById(ctx context.Context, payload *pkgdto.ByIDRequest) (*dto.UsersWithCUDResponse, error) {
+	user, err := s.UsersRepository.FindByID(ctx, payload.ID)
+	if err != nil {
+		if err == constant.RECORD_NOT_FOUND {
+			return &dto.UsersWithCUDResponse{}, res.ErrorBuilder(&res.ErrorConstant.NotFound, err)
+		}
+		return &dto.UsersWithCUDResponse{}, res.ErrorBuilder(&res.ErrorConstant.InternalServerError, err)
+	}
+	_, err = s.UsersRepository.Destroy(ctx, &user)
+	if err != nil {
+		return &dto.UsersWithCUDResponse{}, res.ErrorBuilder(&res.ErrorConstant.InternalServerError, err)
+	}
+
+	result := &dto.UsersWithCUDResponse{
+		UsersResponse: dto.UsersResponse{
+			ID:    user.ID,
+			Name:  user.Name,
+			Email: user.Email,
+		},
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+		DeletedAt: &user.DeletedAt,
+	}
+
 	return result, nil
 }

@@ -4,8 +4,8 @@ import (
 	"context"
 	"day6/internal/dto"
 	"day6/internal/model"
-	"day6/internal/pkg/util"
 	pkgdto "day6/pkg/dto"
+	"day6/pkg/util"
 	"strings"
 
 	"gorm.io/gorm"
@@ -14,11 +14,11 @@ import (
 type Users interface {
 	FindAll(ctx context.Context, payload *pkgdto.SearchGetRequest, p *pkgdto.Pagination) ([]model.Users, *pkgdto.PaginationInfo, error)
 	FindByID(ctx context.Context, id uint) (model.Users, error)
-	ExistByName(ctx context.Context, name string) (bool, error)
-	Save(ctx context.Context, rooms *dto.CreateUsersRequestBody) (model.Users, error)
-	Edit(ctx context.Context, oldRooms *model.Users, updateData *dto.UpdateUsersRequestBody) (*model.Users, error)
-	Destroy(ctx context.Context, rooms *model.Users) (*model.Users, error)
-	Login(ctx context.Context, login *dto.LoginUsersRequestBody) (*model.Users, error)
+	FindByEmail(ctx context.Context, email *string) (*model.Users, error)
+	ExistByEmail(ctx context.Context, email *string) (bool, error)
+	Save(ctx context.Context, user *dto.CreateUsersRequestBody) (model.Users, error)
+	Edit(ctx context.Context, oldUser *model.Users, updateData *dto.UpdateUsersRequestBody) (*model.Users, error)
+	Destroy(ctx context.Context, user *model.Users) (*model.Users, error)
 }
 
 type users struct {
@@ -56,42 +56,72 @@ func (u *users) FindByID(ctx context.Context, id uint) (model.Users, error) {
 	err := q.First(&user).Error
 	return user, err
 }
-
-func (u *users) ExistByName(ctx context.Context, name string) (bool, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (u *users) Save(ctx context.Context, rooms *dto.CreateUsersRequestBody) (model.Users, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (u *users) Edit(ctx context.Context, oldRooms *model.Users, updateData *dto.UpdateUsersRequestBody) (*model.Users, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (u *users) Destroy(ctx context.Context, rooms *model.Users) (*model.Users, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (u *users) Login(ctx context.Context, login *dto.LoginUsersRequestBody) (*model.Users, error) {
-	//TODO implement me
-	var user model.Users
-	q := u.DB.WithContext(ctx).Model(&model.Users{}).Where("email = ? and password = ?", login.Email, login.Password)
-	err := q.First(&user).Error
+func (u *users) FindByEmail(ctx context.Context, email *string) (*model.Users, error) {
+	var data model.Users
+	err := u.DB.WithContext(ctx).Where("email = ?", email).First(&data).Error
 	if err != nil {
 		return nil, err
 	}
-	token, err := util.CreateJWTToken(util.CreateJWTClaims(user.Name, user.Email, user.ID))
-	if err != nil {
+	return &data, nil
+}
+func (u *users) ExistByEmail(ctx context.Context, email *string) (bool, error) {
+	var (
+		count   int64
+		isExist bool
+	)
+	if err := u.DB.WithContext(ctx).Model(&model.Users{}).Where("email = ?", email).Count(&count).Error; err != nil {
+		return isExist, err
+	}
+	if count > 0 {
+		isExist = true
+	}
+	return isExist, nil
+}
+
+func (u *users) Save(ctx context.Context, user *dto.CreateUsersRequestBody) (model.Users, error) {
+	//TODO implement me
+	newUser := model.Users{
+		Name:     user.Name,
+		Email:    user.Email,
+		Password: user.Password,
+	}
+	if err := u.DB.WithContext(ctx).Save(&newUser).Error; err != nil {
+		return newUser, err
+	}
+	return newUser, nil
+}
+
+func (u *users) Edit(ctx context.Context, oldUser *model.Users, updateData *dto.UpdateUsersRequestBody) (*model.Users, error) {
+
+	if updateData.Name != nil {
+		oldUser.Name = *updateData.Name
+	}
+	if updateData.Email != nil {
+		oldUser.Email = *updateData.Email
+	}
+	if updateData.Password != nil {
+		hashedPassword, err := util.HashPassword(*updateData.Password)
+		if err != nil {
+			return nil, err
+		}
+		oldUser.Password = hashedPassword
+	}
+
+	if err := u.DB.
+		WithContext(ctx).
+		Save(oldUser).
+		Find(oldUser).
+		Error; err != nil {
 		return nil, err
 	}
-	user.Token = token
-	if e := u.DB.WithContext(ctx).Save(user).Find(&user).Error; e != nil {
-		return nil, e
+
+	return oldUser, nil
+}
+
+func (u *users) Destroy(ctx context.Context, user *model.Users) (*model.Users, error) {
+
+	if err := u.DB.WithContext(ctx).Delete(user).Error; err != nil {
+		return nil, err
 	}
-	return &user, err
+	return user, nil
 }

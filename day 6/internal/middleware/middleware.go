@@ -38,24 +38,10 @@ func LogMiddlewares(e *echo.Echo) {
 	// defer f.Close()
 }
 
-type SkipRoute struct {
-	Route  string
-	Method string
-}
-
 func JWTMiddleware(claims dto.JWTClaims, signingKey []byte) echo.MiddlewareFunc {
 	config := middleware.JWTConfig{
 		Claims:     &dto.JWTClaims{},
 		SigningKey: signingKey,
-		//Skipper: func(c echo.Context) bool {
-		//	// Skip middleware if path is equal 'login'
-		//	for _, p := range route {
-		//		if c.Request().URL.Path == p.Route && c.Request().Method == p.Method {
-		//			return true
-		//		}
-		//	}
-		//	return false
-		//},
 	}
 	return middleware.JWTWithConfig(config)
 }

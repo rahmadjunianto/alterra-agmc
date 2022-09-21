@@ -1,6 +1,7 @@
 package http
 
 import (
+	"day6/internal/app/auth"
 	"day6/internal/app/users"
 	"day6/internal/factory"
 	"day6/pkg/util"
@@ -17,5 +18,6 @@ func NewHttp(e *echo.Echo, f *factory.Factory) {
 	})
 	v1 := e.Group("/api/v1")
 	users.NewHandler(f).Route(v1.Group("/users"))
+	auth.NewHandler(f).Route(v1.Group("/auth"))
 
 }
