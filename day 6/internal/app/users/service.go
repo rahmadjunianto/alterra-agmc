@@ -111,7 +111,7 @@ func (s *service) DeleteById(ctx context.Context, payload *pkgdto.ByIDRequest) (
 		},
 		CreatedAt: user.CreatedAt,
 		UpdatedAt: user.UpdatedAt,
-		DeletedAt: &user.DeletedAt,
+		DeletedAt: user.DeletedAt,
 	}
 
 	return result, nil

@@ -2,6 +2,7 @@ package database
 
 import (
 	"day6/pkg/util"
+	"fmt"
 	"sync"
 
 	"gorm.io/gorm"
@@ -20,7 +21,7 @@ func CreateConnection() {
 		Port: util.GetEnv("DB_PORT", "3306"),
 		Name: util.GetEnv("DB_NAME", "training"),
 	}
-
+	fmt.Println(conf)
 	mysql := mysqlConfig{dbConfig: conf}
 	once.Do(func() {
 		mysql.Connect()
@@ -32,7 +33,4 @@ func GetConnection() *gorm.DB {
 		CreateConnection()
 	}
 	return dbConn
-}
-func InitMigrate() {
-	dbConn.AutoMigrate()
 }

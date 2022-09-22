@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -30,7 +31,7 @@ func (conf mysqlConfig) Connect() {
 		conf.Name,
 		"utf8",
 		"True",
-		"Asia%2FJakarta",
+		"Local",
 	)
 
 	var err error
