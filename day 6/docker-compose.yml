@@ -16,7 +16,7 @@ services:
       - agmc
   api:
     build:
-      dockerfile: docker/go/Dockerfile
+      dockerfile: Dockerfile
     environment:
       DB_HOST: host.docker.internal
       DB_NAME: "${DB_NAME}"
@@ -29,8 +29,9 @@ services:
       - db
     networks:
       - agmc
-networks: 
+networks:
   agmc:
+    driver: bridge
 volumes:
   db:
     external: false
