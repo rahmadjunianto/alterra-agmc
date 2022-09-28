@@ -49,4 +49,4 @@ jobs:
               sudo chmod 777 /var/run/docker.sock
               docker pull madjun/agmc:latest 
               docker stop agmc || true && docker rm agmc || true && 
-              docker run -p 3000:3000 -e DB_HOST=$DB_HOST -e DB_PASS=$DB_PASS -e DB_NAME=a$DB_NAME -e APP_PORT=3000  --name agmc madjun/agmc
+              docker run -p 3000:3000 -e DB_HOST=$DB_HOST -e DB_PASS=$DB_PASS -e DB_NAME=$DB_NAME -e APP_PORT=3000  --name agmc madjun/agmc
