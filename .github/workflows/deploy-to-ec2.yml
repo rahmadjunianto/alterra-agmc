@@ -50,4 +50,4 @@ jobs:
               docker pull madjun/agmc:latest 
               docker stop agmc 
               docker rm agmc 
-              docker run -d --name agmc -p 3000:3000 -e DB_HOST=$DB_HOST -e DB_PASS=$DB_PASS DB_NAME=$DB_NAME madjun/agmc:latest
+              docker run -p 3000:3000 -e DB_HOST=$DB_HOST -e DB_PASS=$DB_PASS -e DB_NAME=a$DB_NAME -e APP_PORT=3000  --name agmc madjun/agmc
