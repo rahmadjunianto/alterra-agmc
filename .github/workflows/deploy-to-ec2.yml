@@ -13,7 +13,6 @@ jobs:
       run:
         working-directory: ./day 6/
     steps:
-      - name: Deploy to EC2 by using SSH
       - uses: actions/checkout@v3
 
       - name: login to docker hub
