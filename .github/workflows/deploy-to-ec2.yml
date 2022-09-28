@@ -48,6 +48,7 @@ jobs:
             #Now we have got the access of EC2 and we will start the deploy .
               sudo chmod 777 /var/run/docker.sock
               docker pull madjun/agmc:latest 
+              docker ps -a
               docker stop agmc 
               docker rm agmc 
               docker run -p 3000:3000 -e DB_HOST=$DB_HOST -e DB_PASS=$DB_PASS -e DB_NAME=a$DB_NAME -e APP_PORT=3000  --name agmc madjun/agmc
