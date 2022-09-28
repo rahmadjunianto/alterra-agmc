@@ -43,7 +43,7 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 400 private_key
-          ssh -o StrictHostKeyChecking=no -i alterra-agmc.pem ${REMOTE_USER}@${REMOTE_HOST}
+          ssh -o StrictHostKeyChecking=no -i private_key ${REMOTE_USER}@${REMOTE_HOST}
           
             #Now we have got the access of EC2 and we will start the deploy .
               sudo chmod 777 /var/run/docker.sock
